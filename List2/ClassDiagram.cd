@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AbstractList2">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <InheritanceLine Type="GroupContainer" FixedFromPoint="true">
+      <Path>
+        <Point X="4.5" Y="1.25" />
+        <Point X="5.5" Y="1.25" />
+      </Path>
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.068" Y="0.027" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACUAABDAgAAAAAEAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>List2Abstract.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Container">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="Container::Error" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Container.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Class Name="Container::Iterator">
+        <TypeIdentifier>
+          <NewMemberFileName>Container.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BEAAAAQCAgAAQAAEAIAAAAASAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Container.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GroupContainer">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GroupContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mem">
+    <Position X="13.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemoryManager">
+    <Position X="11" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAACAAAAAAAAAAIAAAAgAAAAACAAAAAAAAAIAAAA=</HashCode>
+      <FileName>MemoryManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LinkedList2">
+    <Position X="8.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>LinkedList2.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
