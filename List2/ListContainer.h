@@ -4,11 +4,13 @@ class ListContainer :	public AbstractList2
 {
 public:
 	ListContainer(MemoryManager &mem) : AbstractList2(mem) {
-		front_sentry.next = &back_sentry;
-		back_sentry.prev = &front_sentry;
-		};
+		iterator = new NodeIterator(&front_sentry);
+		list_size = 0;
+		};                               
 	~ListContainer() {
 		clear();
+		delete iterator;
+		iterator = nullptr;
 	};
 	int size() override;
 	virtual size_t max_bytes() override;
@@ -21,6 +23,9 @@ public:
 	struct NextElementError : public Error
 	{
 		NextElementError() : Error("No next element found!") {};
+	};
+	struct WrongIteratorError : public Error {
+		WrongIteratorError() : Error("That is not iterator for this type of container") {};
 	};
 protected:
 	struct Node
@@ -64,7 +69,6 @@ protected:
 		NodeIterator operator++(int);
 		friend bool operator==(NodeIterator &left, NodeIterator &right) { return left.equals(&right); };
 		friend bool operator!=(NodeIterator &left, NodeIterator &right) { return !left.equals(&right); };
-	protected:
 		void setNode(Node *node) { this->node = node; };
 		Node* getNode() { return node; };
 	private:
@@ -74,6 +78,8 @@ protected:
 private:
 	Node front_sentry;
 	Node back_sentry;
+	unsigned int list_size;
+	NodeIterator *iterator;
 	Iterator* newIterator() override;
 };
 

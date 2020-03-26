@@ -54,39 +54,57 @@ ListContainer::Iterator* ListContainer::newIterator()
 }
 
 int ListContainer::size() {
-
+	return list_size;
 }
 
 size_t ListContainer::max_bytes()
 {
+	//should somehow work with memory manager
+	//currently dont know how
 	return size_t();
 }
 
 
 ListContainer::Iterator* ListContainer::find(void *elem, size_t size)
 {
-	NodeIterator* iterator = nullptr;
-	for (auto cur = static_cast<NodeIterator*>(begin()); *cur != *static_cast<NodeIterator*>(end()); ++(*cur)) {
-		if (cur->hasEqual(Node(elem, size))) {
-
+	size_t elem_size;
+	for (auto cur = begin(); cur != end(); cur->goToNext()) {
+		if (elem == cur->getElement(elem_size)) {
+			if (size == elem_size) {
+				return cur;
+			}
 		}
 	}
-	return iterator;
+	return nullptr;
 }
 
 //returns iterator to the position after last element
-ListContainer::Iterator* ListContainer::end() {
-	return (front_sentry == back_sentry) ? nullptr : new NodeIterator(&back_sentry);
+ListContainer::Iterator* ListContainer::end() {	
+	if (empty())
+		return nullptr;
+	iterator->setNode(&back_sentry);
+	return iterator;
 }
 
 
 //returns iterator to the first element
 ListContainer::Iterator* ListContainer::begin() {
-	return (front_sentry == back_sentry) ? nullptr : new NodeIterator(front_sentry.next);
+	if(empty())
+		return nullptr;
+	iterator->setNode(front_sentry.next);
+	return iterator;
 }
 
-void ListContainer::remove(Iterator * iter)
+void ListContainer::remove(Iterator *iter)
 {
+	//you should be very careful here
+	if (iterator->equals(iter)) {
+
+	}
+	else {
+		find(iter)
+	}
+
 }
 
 void ListContainer::clear()
@@ -95,5 +113,5 @@ void ListContainer::clear()
 
 
 bool ListContainer::empty() {
-	return front_sentry == back_sentry;
+	return front_sentry.next == nullptr;
 }
