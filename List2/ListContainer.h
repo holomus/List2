@@ -6,6 +6,7 @@ public:
 	ListContainer(MemoryManager &mem) : AbstractList2(mem) {
 		front_sentry.next = &back_sentry;
 		back_sentry.prev = &front_sentry;
+		elem_count = 0;
 		};
 	~ListContainer() {
 		clear();
@@ -22,7 +23,14 @@ public:
 	{
 		NextElementError() : Error("No next element found!") {};
 	};
+	struct BoundaryError : public Error
+	{
+		BoundaryError() : Error("Trying to access boundaries of list!") {};
+	};
 protected:
+	void* newNode(size_t sz);
+	Iterator* newIterator() override;
+
 	struct Node
 	{
 		Node(Node *next, Node *prev, void *elem, size_t size) : next(next), prev(prev), elem(elem), elem_size(size) {};
@@ -42,38 +50,30 @@ protected:
 		bool isSame(Node &right) {
 			return prev == right.prev && next == right.next;
 		};
+		static void* operator new(size_t sz);
 	};
-	
 	class NodeIterator : public ListContainer::Iterator 
 	{
 	public:
 		NodeIterator(Node *node) : node(node) {};
 		NodeIterator() : NodeIterator(nullptr) {};
-		~NodeIterator() {
-			delete node;
-			node = nullptr;
-		}
 		void* getElement(size_t &size) override;
 		bool hasNext() override;
 		void goToNext() override;
 		bool equals(Iterator *right) override;
-
-		bool hasEqual(Node &right);
-
-		NodeIterator& operator++();
-		NodeIterator operator++(int);
-		friend bool operator==(NodeIterator &left, NodeIterator &right) { return left.equals(&right); };
-		friend bool operator!=(NodeIterator &left, NodeIterator &right) { return !left.equals(&right); };
-	protected:
 		void setNode(Node *node) { this->node = node; };
 		Node* getNode() { return node; };
+		NodeIterator& operator++();
+		NodeIterator operator++(int);
+		bool hasEqual(Node &right);
+	protected:
+		friend bool operator==(NodeIterator &left, NodeIterator &right) { return left.equals(&right); };
+		friend bool operator!=(NodeIterator &left, NodeIterator &right) { return !left.equals(&right); };
 	private:
-		friend ListContainer::ListContainer(MemoryManager &mem);
 		Node *node;
 	};
-private:
 	Node front_sentry;
 	Node back_sentry;
-	Iterator* newIterator() override;
+	int elem_count;
 };
 
