@@ -1,9 +1,9 @@
 #pragma once
-#include "ListContainer.h"
+#include "List2Abstract.h"
 class List2 :
-	public ListContainer
+	public AbstractList2
 {
-	List2(MemoryManager &mem) :ListContainer(mem) {};
+	List2(MemoryManager &mem) :AbstractList2(mem) {};
 	int push_back(void *elem, size_t elemSize) override;
 	int push_front(void *elem, size_t elemSize) override;
 	void pop_back() override;

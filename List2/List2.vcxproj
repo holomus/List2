@@ -116,16 +116,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Container.h" />
-    <ClInclude Include="GroupContainer.h" />
     <ClInclude Include="List2.h" />
-    <ClInclude Include="ListContainer.h" />
+    <ClInclude Include="GroupContainer.h" />
     <ClInclude Include="List2Abstract.h" />
     <ClInclude Include="Mem.h" />
     <ClInclude Include="MemoryManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="List2.cpp" />
-    <ClCompile Include="ListContainer.cpp" />
+    <ClCompile Include="GroupContainer.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>

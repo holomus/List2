@@ -1,41 +1,41 @@
-#include "ListContainer.h"
+#include "GroupContainer.h"
 
 
-void* ListContainer::NodeIterator::getElement(size_t& size)
+void* GroupContainer::NodeIterator::getElement(size_t& size)
 {
 	size = node->elem_size;
 	return node->elem;
 }
 
-bool ListContainer::NodeIterator::hasNext()
+bool GroupContainer::NodeIterator::hasNext()
 {
 	return node->next != nullptr;
 }
 
-void ListContainer::NodeIterator::goToNext()
+void GroupContainer::NodeIterator::goToNext()
 {
 	if (!hasNext()) throw NextElementError();
 	node = node->next;
 }
 
-bool ListContainer::NodeIterator::equals(Iterator* right)
+bool GroupContainer::NodeIterator::equals(Iterator* right)
 {
 	NodeIterator* iterator = dynamic_cast<NodeIterator*>(right);
 	return iterator != nullptr && node->isSame(*iterator->node);
 }
 
-bool ListContainer::NodeIterator::hasEqual(Node &element)
+bool GroupContainer::NodeIterator::hasEqual(Node &element)
 {
 	return node->isEqual(element);
 }
 
-ListContainer::NodeIterator& ListContainer::NodeIterator::operator++()
+GroupContainer::NodeIterator& GroupContainer::NodeIterator::operator++()
 {
 	goToNext();
 	return *this;
 }
 
-ListContainer::NodeIterator ListContainer::NodeIterator::operator++(int)
+GroupContainer::NodeIterator GroupContainer::NodeIterator::operator++(int)
 {
 	NodeIterator copy(*this);
 	operator++();
@@ -43,29 +43,29 @@ ListContainer::NodeIterator ListContainer::NodeIterator::operator++(int)
 }
 
 
-void* ListContainer::newNode(size_t sz)
+void* GroupContainer::newNode(size_t sz)
 {
 	return _memory.allocMem(sz);
 }
 
-ListContainer::Iterator* ListContainer::newIterator()
+GroupContainer::Iterator* GroupContainer::newIterator()
 {
 	//is it what it is supposed to do
 	//I dont understand
 	return new NodeIterator;
 }
 
-int ListContainer::size() {
+int GroupContainer::size() {
 	return elem_count;
 }
 
-size_t ListContainer::max_bytes()
+size_t GroupContainer::max_bytes()
 {
 	return _memory.maxBytes();
 }
 
 
-ListContainer::Iterator* ListContainer::find(void *elem, size_t size)
+GroupContainer::Iterator* GroupContainer::find(void *elem, size_t size)
 {
 	NodeIterator *iterator = nullptr;
 	Node node(elem, size);
@@ -79,17 +79,17 @@ ListContainer::Iterator* ListContainer::find(void *elem, size_t size)
 }
 
 //returns iterator to the position after last element
-ListContainer::Iterator* ListContainer::end() {
+GroupContainer::Iterator* GroupContainer::end() {
 	return (empty()) ? nullptr : new NodeIterator(&back_sentry);
 }
 
 
 //returns iterator to the first element
-ListContainer::Iterator* ListContainer::begin() {
+GroupContainer::Iterator* GroupContainer::begin() {
 	return (empty()) ? nullptr : new NodeIterator(front_sentry.next);
 }
 
-void ListContainer::remove(Iterator *iter)
+void GroupContainer::remove(Iterator *iter)
 {
 	NodeIterator* iterator = dynamic_cast<NodeIterator*>(iter);
 	if (iterator->getNode()->isSame(front_sentry) || iterator->getNode()->isSame(back_sentry))
@@ -101,7 +101,7 @@ void ListContainer::remove(Iterator *iter)
 	delete node;
 }
 
-void ListContainer::clear()
+void GroupContainer::clear()
 {
 	if (empty()) return;
 	NodeIterator iter(front_sentry.next);
@@ -110,7 +110,7 @@ void ListContainer::clear()
 }
 
 
-bool ListContainer::empty() {
+bool GroupContainer::empty() {
 	return front_sentry.next == &back_sentry;
 }
 
