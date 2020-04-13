@@ -3,11 +3,7 @@
 class GroupContainer :	public Container
 {
 public:
-	GroupContainer(MemoryManager &mem) : Container(mem) {
-		front_sentry.next = &back_sentry;
-		back_sentry.prev = &front_sentry;
-		elem_count = 0;
-		};
+	GroupContainer(MemoryManager &mem);
 	~GroupContainer() {
 		clear();
 	};
@@ -28,7 +24,6 @@ public:
 		BoundaryError() : Error("Trying to access boundaries of list!") {};
 	};
 protected:
-	void* newNode(size_t sz);
 	Iterator* newIterator() override;
 
 	struct Node
@@ -51,6 +46,7 @@ protected:
 			return prev == right.prev && next == right.next;
 		};
 		static void* operator new(size_t sz);
+		static void operator delete(void* ptr);
 	};
 	class NodeIterator : public GroupContainer::Iterator 
 	{

@@ -1,5 +1,14 @@
 #include "GroupContainer.h"
 
+static MemoryManager* mem_manager;
+
+GroupContainer::GroupContainer(MemoryManager & mem)	: Container(mem)
+{
+	front_sentry.next = &back_sentry;
+	back_sentry.prev = &front_sentry;
+	elem_count = 0;
+	mem_manager = &mem;
+};
 
 void* GroupContainer::NodeIterator::getElement(size_t& size)
 {
@@ -43,17 +52,13 @@ GroupContainer::NodeIterator GroupContainer::NodeIterator::operator++(int)
 }
 
 
-void* GroupContainer::newNode(size_t sz)
-{
-	return _memory.allocMem(sz);
-}
-
 GroupContainer::Iterator* GroupContainer::newIterator()
 {
 	//is it what it is supposed to do
 	//I dont understand
 	return new NodeIterator;
 }
+
 
 int GroupContainer::size() {
 	return elem_count;
@@ -114,4 +119,13 @@ bool GroupContainer::empty() {
 	return front_sentry.next == &back_sentry;
 }
 
+void * GroupContainer::Node::operator new(size_t sz)
+{
+	return mem_manager.
+	return allocNode(sz);
+}
 
+void GroupContainer::Node::operator delete(void * ptr)
+{
+	freeNode(ptr);
+}
