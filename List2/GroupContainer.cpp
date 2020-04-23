@@ -1,11 +1,11 @@
 #include "GroupContainer.h"
 
-static MemoryManager* mem_manager;
+static MemoryManager* mem_manager = nullptr;
 
 GroupContainer::GroupContainer(MemoryManager & mem)	: Container(mem)
 {
-	front_sentry.next = &back_sentry;
-	back_sentry.prev = &front_sentry;
+	if (mem_manager != nullptr && mem_manager != &mem) throw MemoryManagerError();
+	front_sentry.next = nullptr;
 	elem_count = 0;
 	mem_manager = &mem;
 };
@@ -30,7 +30,7 @@ void GroupContainer::NodeIterator::goToNext()
 bool GroupContainer::NodeIterator::equals(Iterator* right)
 {
 	NodeIterator* iterator = dynamic_cast<NodeIterator*>(right);
-	return iterator != nullptr && node->isSame(*iterator->node);
+	return iterator->node == node;
 }
 
 bool GroupContainer::NodeIterator::hasEqual(Node &element)
@@ -82,50 +82,58 @@ GroupContainer::Iterator* GroupContainer::find(void *elem, size_t size)
 		}
 	return iterator;
 }
-
-//returns iterator to the position after last element
-GroupContainer::Iterator* GroupContainer::end() {
-	return (empty()) ? nullptr : new NodeIterator(&back_sentry);
-}
-
-
 //returns iterator to the first element
 GroupContainer::Iterator* GroupContainer::begin() {
 	return (empty()) ? nullptr : new NodeIterator(front_sentry.next);
-}
-
-void GroupContainer::remove(Iterator *iter)
-{
-	NodeIterator* iterator = dynamic_cast<NodeIterator*>(iter);
-	if (iterator->getNode()->isSame(front_sentry) || iterator->getNode()->isSame(back_sentry))
-		throw BoundaryError();
-	Node* node = iterator->getNode();
-	node->prev->next = node->next;
-	node->next->prev = node->prev;
-	iterator->setNode(node->next);
-	delete node;
 }
 
 void GroupContainer::clear()
 {
 	if (empty()) return;
 	NodeIterator iter(front_sentry.next);
-	while (!iter.getNode()->isSame(back_sentry))
-		remove(&iter);
+	Node *node = iter.getNode();
+	while (iter.hasNext()) {
+		//remove(&iter);
+		node = iter.getNode();
+		iter.goToNext();
+		delete node;
+	}
 }
 
+void GroupContainer::remove(Iterator *iter)
+{
+	if (empty()) throw IteratorError();
+	NodeIterator prev(&front_sentry);
+	NodeIterator curr(front_sentry.next);
+	while (!curr.equals(iter)) {
+		curr.goToNext();
+		prev.goToNext();
+	}
+	prev.getNode()->next = curr.getNode()->next;
+	delete curr.getNode();
+	iter = &prev;
+}
 
 bool GroupContainer::empty() {
-	return front_sentry.next == &back_sentry;
+	return front_sentry.next == nullptr;
+}
+
+GroupContainer::Iterator* GroupContainer::end() {
+	if (empty())
+		return nullptr;
+	NodeIterator *iter = new NodeIterator(front_sentry.next);
+	while (iter->hasNext())
+		iter->goToNext();
+	return iter;
 }
 
 void * GroupContainer::Node::operator new(size_t sz)
 {
-	return mem_manager.
-	return allocNode(sz);
+	return mem_manager->allocMem(sz);
 }
 
 void GroupContainer::Node::operator delete(void * ptr)
 {
-	freeNode(ptr);
+	mem_manager->freeMem(ptr);
+	ptr = nullptr;
 }
