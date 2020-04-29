@@ -15,8 +15,15 @@ class List2 :
 	void* front(size_t &size) override;
 	void* back(size_t &size) override;
 	int insert(Iterator *iter, void *elem, size_t elemSize) override;
-
+	Iterator* end() override;
+	void remove(Iterator *iter) override;
+	bool empty() override;
 protected:
-	Node back_sentry;
+	struct DoubleNode : public Node {
+		DoubleNode(Node *prev, Node *next, void *elem, size_t size) : Node(next, elem, size), prev(prev) {};
+		DoubleNode() : Node(), prev(nullptr) {};
+		Node* prev;
+	};
+	DoubleNode back_sentry;
 };
 

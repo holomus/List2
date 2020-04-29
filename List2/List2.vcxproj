@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="List2.cpp" />
     <ClCompile Include="GroupContainer.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>

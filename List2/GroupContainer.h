@@ -15,9 +15,9 @@ public:
 	virtual void remove(Iterator *iter) override;
 	void clear() override;
 	virtual bool empty() override;
-	struct NextElementError : public Error
+	struct ElementError : public Error
 	{
-		NextElementError() : Error("No next element found!") {};
+		ElementError() : Error("No element found!") {};
 	};
 	struct BoundaryError : public Error
 	{
@@ -73,6 +73,7 @@ protected:
 	private:
 		Node *node;
 	};
+	Node back_sentry;
 	Node front_sentry;
 	int elem_count;
 };

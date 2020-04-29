@@ -1,11 +1,11 @@
-#include "GroupContainer.h"
+﻿#include "GroupContainer.h"
 
 static MemoryManager* mem_manager = nullptr;
 
 GroupContainer::GroupContainer(MemoryManager & mem)	: Container(mem)
 {
 	if (mem_manager != nullptr && mem_manager != &mem) throw MemoryManagerError();
-	front_sentry.next = nullptr;
+	front_sentry.next = &back_sentry;
 	elem_count = 0;
 	mem_manager = &mem;
 };
@@ -23,7 +23,7 @@ bool GroupContainer::NodeIterator::hasNext()
 
 void GroupContainer::NodeIterator::goToNext()
 {
-	if (!hasNext()) throw NextElementError();
+	if (!hasNext()) throw ElementError();
 	node = node->next;
 }
 
@@ -82,10 +82,17 @@ GroupContainer::Iterator* GroupContainer::find(void *elem, size_t size)
 		}
 	return iterator;
 }
-//returns iterator to the first element
+
+
 GroupContainer::Iterator* GroupContainer::begin() {
 	return (empty()) ? nullptr : new NodeIterator(front_sentry.next);
 }
+
+GroupContainer::Iterator* GroupContainer::end() {
+	return (empty()) ? nullptr : new NodeIterator(&back_sentry);
+}
+
+
 
 void GroupContainer::clear()
 {
@@ -100,6 +107,7 @@ void GroupContainer::clear()
 	}
 }
 
+//удаляет элемент после удаления итератор указывает на следующий элемент
 void GroupContainer::remove(Iterator *iter)
 {
 	if (empty()) throw IteratorError();
@@ -111,21 +119,14 @@ void GroupContainer::remove(Iterator *iter)
 	}
 	prev.getNode()->next = curr.getNode()->next;
 	delete curr.getNode();
+	prev.goToNext();
 	iter = &prev;
 }
 
 bool GroupContainer::empty() {
-	return front_sentry.next == nullptr;
+	return front_sentry.next == &back_sentry;
 }
 
-GroupContainer::Iterator* GroupContainer::end() {
-	if (empty())
-		return nullptr;
-	NodeIterator *iter = new NodeIterator(front_sentry.next);
-	while (iter->hasNext())
-		iter->goToNext();
-	return iter;
-}
 
 void * GroupContainer::Node::operator new(size_t sz)
 {
