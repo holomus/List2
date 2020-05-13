@@ -3,6 +3,7 @@
 class List2 :
 	public AbstractList2
 {
+public:
 	List2(MemoryManager& mem) : AbstractList2(mem) 
 	{
 		front_sentry.next = &back_sentry;

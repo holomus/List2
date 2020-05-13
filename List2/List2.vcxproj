@@ -117,6 +117,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Container.h" />
+    <ClInclude Include="ContainerTest.h" />
     <ClInclude Include="List2.h" />
     <ClInclude Include="GroupContainer.h" />
     <ClInclude Include="List2Abstract.h" />
@@ -124,10 +125,10 @@
     <ClInclude Include="MemoryManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ContainerTest.cpp" />
     <ClCompile Include="List2.cpp" />
     <ClCompile Include="GroupContainer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

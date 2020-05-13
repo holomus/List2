@@ -5,6 +5,7 @@ int List2::push_back(void *elem, size_t elemSize)
 	DoubleNode *node = new DoubleNode(back_sentry.prev, &back_sentry, elem, elemSize);
 	back_sentry.prev->next = node;
 	back_sentry.prev = node;
+	++elem_count;
 	return 0;
 }
 
@@ -13,6 +14,7 @@ int List2::push_front(void * elem, size_t elemSize)
 	DoubleNode *node = new DoubleNode(&front_sentry, front_sentry.next, elem, elemSize);
 	(static_cast<DoubleNode*>(front_sentry.next))->prev = node;
 	front_sentry.next = node;
+	++elem_count;
 	return 0;
 }
 
@@ -52,6 +54,7 @@ int List2::insert(Iterator *iter, void * elem, size_t elemSize)
 	iter_node->prev->next = node;
 	iter_node->prev = node;
 	iterator->setNode(node);
+	++elem_count;
 	return 0;
 }
 
@@ -76,4 +79,5 @@ void List2::remove(Iterator* iter)
 	(static_cast<DoubleNode*>(iter_node->next))->prev = iter_node->prev;
 	iterator->goToNext();
 	delete iter_node;
+	--elem_count;
 }

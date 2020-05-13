@@ -105,6 +105,7 @@ void GroupContainer::clear()
 		iter.goToNext();
 		delete node;
 	}
+	elem_count = 0;
 }
 
 //удаляет элемент после удаления итератор указывает на следующий элемент
@@ -121,6 +122,7 @@ void GroupContainer::remove(Iterator *iter)
 	delete curr.getNode();
 	prev.goToNext();
 	iter = &prev;
+	--elem_count;
 }
 
 bool GroupContainer::empty() {
