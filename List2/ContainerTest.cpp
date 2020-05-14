@@ -14,8 +14,12 @@ void ListTest::test_case_one()
 	list.push_back(a, sizeof(*a));
 	list.push_back(b, sizeof(*b));
 	list.push_back(c, sizeof(*c));
-	if (list.size() != 3)
+	if (list.size() != 3) {
 		cout << "ERROR: push_back doesnt work!!\n";
+		cout << "Test case one failed!!\n";
+		delete a, b, c;
+		return;
+	}
 	else
 		cout << "Size of the list: " << list.size << endl << "Test one passed\n";
 
@@ -30,8 +34,12 @@ void ListTest::test_case_one()
 	list.push_front(e, sizeof(*e));
 	list.push_front(f, sizeof(*f));
 	list.push_front(g, sizeof(*g));
-	if (list.size() != 6)
+	if (list.size() != 6) {
 		cout << "ERROR: push_front doesnt work!!\n";
+		cout << "Test case one failed!!\n";
+		delete a, b, c, e, f, g;
+		return;
+	}
 	else
 		cout << "Size of the list: " << list.size << endl << "Test two passed\n";
 
@@ -60,8 +68,12 @@ void ListTest::test_case_one()
 		iter->goToNext();
 		if (equal)
 			cout << "Test three passed\n";
-		else
+		else {
 			cout << "ERROR: Push functions or getElement and goToNext functions dont work\n";
+			cout << "Test case one failed!!\n";
+			delete a, b, c, e, f, g;
+			return;
+		}
 	}
 	else
 		cout << "ERROR: begin or push functions dont work\n";
@@ -69,7 +81,15 @@ void ListTest::test_case_one()
 	cout << "Size of the list: " << list.size << endl;
 	list.clear();
 	cout << "Size of the list: " << list.size << endl;
-
+	if (list.empty())
+		cout << "Test four passed\n";
+	else {
+		cout << "ERROR: clear function doesnt work!!\n";
+		cout << "Test case one failed!!\n";
+		delete a, b, c, e, f, g;
+		return;
+	}
+	cout << "Test case one passed!!\n";
 }
 
 void ListTest::test_case_two()

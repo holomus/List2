@@ -30,7 +30,7 @@ void GroupContainer::NodeIterator::goToNext()
 bool GroupContainer::NodeIterator::equals(Iterator* right)
 {
 	NodeIterator* iterator = dynamic_cast<NodeIterator*>(right);
-	return iterator->node == node;
+	return iterator != nullptr && iterator->node == node;
 }
 
 bool GroupContainer::NodeIterator::hasEqual(Node &element)
@@ -49,7 +49,7 @@ GroupContainer::NodeIterator GroupContainer::NodeIterator::operator++(int)
 	NodeIterator copy(*this);
 	operator++();
 	return copy;
-}
+}	
 
 
 GroupContainer::Iterator* GroupContainer::newIterator()
