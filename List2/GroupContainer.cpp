@@ -98,20 +98,16 @@ void GroupContainer::clear()
 {
 	if (empty()) return;
 	NodeIterator iter(front_sentry.next);
-	Node *node = iter.getNode();
 	while (iter.hasNext()) {
-		//remove(&iter);
-		node = iter.getNode();
-		iter.goToNext();
-		delete node;
+		remove(&iter);
 	}
-	elem_count = 0;
 }
 
 //удаляет элемент после удаления итератор указывает на следующий элемент
 void GroupContainer::remove(Iterator *iter)
 {
 	if (empty()) throw IteratorError();
+	if (!iter->hasNext()) throw BoundaryError();
 	NodeIterator prev(&front_sentry);
 	NodeIterator curr(front_sentry.next);
 	while (!curr.equals(iter)) {

@@ -21,34 +21,34 @@ int List2::push_front(void * elem, size_t elemSize)
 void List2::pop_back()
 {
 	if (empty()) throw ElementError();
-	NodeIterator iter(back_sentry.prev);
+	DoubleNodeIterator iter(back_sentry.prev);
 	remove(&iter);
 }
 
 void List2::pop_front()
 {
 	if (empty()) throw ElementError();
-	NodeIterator iter(front_sentry.next);
+	DoubleNodeIterator iter(front_sentry.next);
 	remove(&iter);
 }
 
 void* List2::front(size_t &size)
 {
 	if (empty()) throw ElementError();
-	NodeIterator front(front_sentry.next);
+	DoubleNodeIterator front(front_sentry.next);
 	return front.getElement(size);
 }
 
 void* List2::back(size_t &size)
 {
 	if (empty()) throw ElementError();
-	NodeIterator back(back_sentry.prev);
+	DoubleNodeIterator back(back_sentry.prev);
 	return back.getElement(size);
 }
 
 int List2::insert(Iterator *iter, void * elem, size_t elemSize)
 {
-	NodeIterator *iterator = dynamic_cast<NodeIterator*>(iter);
+	DoubleNodeIterator *iterator = dynamic_cast<DoubleNodeIterator*>(iter);
 	DoubleNode *iter_node = static_cast<DoubleNode*>(iterator->getNode());
 	DoubleNode *node = new DoubleNode(iter_node->prev, iter_node, elem, elemSize);
 	iter_node->prev->next = node;
@@ -58,9 +58,27 @@ int List2::insert(Iterator *iter, void * elem, size_t elemSize)
 	return 0;
 }
 
+List2::Iterator* List2::find(void * elem, size_t size)
+{
+	DoubleNodeIterator *iterator = nullptr;
+	Node node(elem, size);
+	for (DoubleNodeIterator iter(front_sentry.next); iter.hasNext(); iter.goToNext())
+		if (iter.hasEqual(node))
+		{
+			iterator = new DoubleNodeIterator(iter);
+			break;
+		}
+	return iterator;
+}
+
+List2::Iterator* List2::begin()
+{
+	return (empty()) ? nullptr : new DoubleNodeIterator(front_sentry.next);
+}
+
 List2::Iterator* List2::end()
 {
-	return (empty()) ? nullptr : new NodeIterator(&back_sentry);
+	return (empty()) ? nullptr : new DoubleNodeIterator(&back_sentry);
 }
 
 
@@ -69,11 +87,21 @@ bool List2::empty()
 	return front_sentry.next == &back_sentry;
 }
 
+void List2::clear()
+{
+	if (empty()) return;
+	DoubleNodeIterator iter(front_sentry.next);
+	while (iter.hasNext()) {
+		remove(&iter);
+	}
+}
+
 
 void List2::remove(Iterator* iter)
 {
 	if (empty()) throw IteratorError();
-	NodeIterator *iterator = dynamic_cast<NodeIterator*>(iter);
+	if (!iter->hasNext()) throw BoundaryError();
+	DoubleNodeIterator *iterator = dynamic_cast<DoubleNodeIterator*>(iter);
 	DoubleNode *iter_node = static_cast<DoubleNode*>(iterator->getNode());
 	iter_node->prev->next = iter_node->next;
 	(static_cast<DoubleNode*>(iter_node->next))->prev = iter_node->prev;

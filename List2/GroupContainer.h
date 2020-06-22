@@ -9,11 +9,11 @@ public:
 	};
 	int size() override;
 	size_t max_bytes() override;
-	Iterator* find(void *elem, size_t size) override;
-	Iterator* begin() override;
+	virtual Iterator* find(void *elem, size_t size) override;
+	virtual Iterator* begin() override;
 	virtual Iterator* end() override;
 	virtual void remove(Iterator *iter) override;
-	void clear() override;
+	virtual void clear() override;
 	virtual bool empty() override;
 	struct ElementError : public Error
 	{
@@ -70,7 +70,6 @@ protected:
 	protected:
 		friend bool operator==(NodeIterator &left, NodeIterator &right) { return left.equals(&right); };
 		friend bool operator!=(NodeIterator &left, NodeIterator &right) { return !left.equals(&right); };
-	private:
 		Node *node;
 	};
 	Node back_sentry;
